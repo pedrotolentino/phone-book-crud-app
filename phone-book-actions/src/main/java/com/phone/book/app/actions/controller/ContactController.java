@@ -2,10 +2,10 @@ package com.phone.book.app.actions.controller;
 
 import com.phone.book.app.actions.model.Contact;
 import com.phone.book.app.actions.service.ContactService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +22,21 @@ public class ContactController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Contact> getContacts() {
         return contactService.getAllContacts();
+    }
+
+    @PostMapping
+    public ResponseEntity<Contact> registerContact(@ModelAttribute Contact contact) {
+        Contact createdContact = contactService.registerContact(contact);
+        return new ResponseEntity<>(contact, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public Contact updateContact(@RequestBody Contact contact) {
+        return contactService.updateContact(contact);
+    }
+
+    @DeleteMapping
+    public void deleteContact(@RequestBody Contact contact) {
+        contactService.deleteContact(contact);
     }
 }
