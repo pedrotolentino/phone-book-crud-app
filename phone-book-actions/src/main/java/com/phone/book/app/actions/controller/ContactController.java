@@ -2,6 +2,11 @@ package com.phone.book.app.actions.controller;
 
 import com.phone.book.app.actions.model.Contact;
 import com.phone.book.app.actions.service.ContactService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,23 +25,27 @@ public class ContactController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Contact> getContacts() {
-        return contactService.getAllContacts();
+    public Page<Contact> getContacts(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "5") int size,
+                                     @RequestParam(defaultValue = "lastName,asc") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return contactService.getAllContacts(pageable);
     }
 
-    @PostMapping
-    public ResponseEntity<Contact> registerContact(@ModelAttribute Contact contact) {
+    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Contact> registerContact(@Valid Contact contact) {
         Contact createdContact = contactService.registerContact(contact);
-        return new ResponseEntity<>(contact, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdContact, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Contact updateContact(@RequestBody Contact contact) {
-        return contactService.updateContact(contact);
+    public ResponseEntity<Contact> updateContact(@Valid @RequestBody Contact contact) {
+        return ResponseEntity.ok(contactService.updateContact(contact));
     }
 
     @DeleteMapping
-    public void deleteContact(@RequestBody Contact contact) {
+    public ResponseEntity<Void> deleteContact(@Valid @RequestBody Contact contact) {
         contactService.deleteContact(contact);
+        return ResponseEntity.noContent().build();
     }
 }

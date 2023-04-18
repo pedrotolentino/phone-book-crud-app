@@ -3,6 +3,9 @@ package com.phone.book.app.actions.service;
 import com.phone.book.app.actions.exception.custom.ResourceNotFoundException;
 import com.phone.book.app.actions.model.Contact;
 import com.phone.book.app.actions.repository.ContactRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +19,8 @@ public class ContactService {
         this.contactRepository = contactRepository;
     }
 
-    public List<Contact> getAllContacts() {
-        List<Contact> contacts = contactRepository.findAll();
+    public Page<Contact> getAllContacts(Pageable pageable) {
+        Page<Contact> contacts = contactRepository.findAll(pageable);
 
         if (contacts.isEmpty()) throw new ResourceNotFoundException();
 

@@ -1,6 +1,8 @@
 package com.phone.book.app.actions.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "contacts")
@@ -10,10 +12,13 @@ public class Contact {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "First name not informed properly")
     private String firstName;
 
+    @NotBlank(message = "Last name not informed properly")
     private String lastName;
 
+    @NotNull(message = "Phone number not informed properly")
     private Integer phoneNumber;
 
     public Integer getId() {
