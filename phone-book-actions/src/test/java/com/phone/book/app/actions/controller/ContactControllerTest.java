@@ -5,20 +5,19 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.phone.book.app.actions.exception.custom.ResourceNotFoundException;
 import com.phone.book.app.actions.factory.ContactFactory;
 import com.phone.book.app.actions.model.Contact;
+import com.phone.book.app.actions.model.wrapper.ContactWrapper;
 import com.phone.book.app.actions.service.ContactService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -40,7 +39,7 @@ public class ContactControllerTest {
     @Test
     public void shouldGetAllTheContacts() throws Exception {
         ObjectMapper mapper = new JsonMapper();
-        Page<Contact> expectedContacts = new PageImpl<>(Collections.singletonList(ContactFactory.generateContact()));
+        ContactWrapper expectedContacts = new ContactWrapper(new PageImpl<>(Collections.singletonList(ContactFactory.generateContact())));
 
         when(service.getAllContacts(any(Pageable.class))).thenReturn(expectedContacts);
 

@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 public class Contact {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "First name not informed properly")

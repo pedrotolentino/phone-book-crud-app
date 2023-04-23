@@ -1,6 +1,7 @@
 package com.phone.book.app.actions.controller;
 
 import com.phone.book.app.actions.model.Contact;
+import com.phone.book.app.actions.model.wrapper.ContactWrapper;
 import com.phone.book.app.actions.service.ContactService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -25,10 +26,10 @@ public class ContactController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Contact> getContacts(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "5") int size,
-                                     @RequestParam(defaultValue = "lastName,asc") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+    public ContactWrapper getContacts(@RequestParam(required = false, defaultValue = "0") int page,
+                                      @RequestParam(required = false, defaultValue = "5") int size,
+                                      @RequestParam(required = false, defaultValue = "lastName") String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
         return contactService.getAllContacts(pageable);
     }
 
