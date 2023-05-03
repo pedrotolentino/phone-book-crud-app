@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mysql:latest
+    volumes:
+      - phone-book-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: 'phone_book'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'user'
+      MYSQL_ROOT_PASSWORD: 'root123'
+    ports:
+      - '3306:3306'
+    expose:
+      - 3306
+    networks:
+      - phone-book-network
+  backend:
+    depends_on:
+      db:
+        condition: service_started
+    image: phone-book/backend
+    build:
+      context: ./phone-book-actions
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+      - '8787:8787'
+    expose:
+      - 8080
+    networks:
+      - phone-book-network
+    environment:
+      - MYSQL_HOST=db
+
+volumes:
+  phone-book-data:
+
+networks:
+  phone-book-network:
+    driver: bridge
