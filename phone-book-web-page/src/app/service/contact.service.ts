@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { ContactWrapper } from './contact-wrapper';
-import { Contact } from './contact';
+import { ContactWrapper } from '../model/contact-wrapper';
+import { Contact } from '../model/contact';
 
 @Injectable({
   providedIn: 'root'

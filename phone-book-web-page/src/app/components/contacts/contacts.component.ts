@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Contact } from '../contact';
+import { Contact } from '../../model/contact';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormComponent } from '../modal-form/modal-form.component';
-import { ContactService } from '../contact.service';
+import { ContactService } from 'src/app/service/contact.service';
 
 @Component({
   selector: 'app-contacts',

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Contact } from '../contact';
+import { Contact } from '../../model/contact';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
