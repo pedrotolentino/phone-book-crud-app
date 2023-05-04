@@ -1,20 +1,35 @@
-<table>
-    <thead>
-        <tr>
-            <th scope="col"> First Name</th>
-            <th scope="col"> Last Name</th>
-            <th scope="col"> Phone Number</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let contact of contacts">
-            <td>{{contact.firstName | titlecase}}</td>
-            <td>{{contact.lastName | titlecase}}</td>
-            <td>{{contact.phoneNumber}}</td>
-            <td>
-                <button (click)="editContact(contact)"></button>
-                <button (click)="deleteContact(contact)"></button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="container table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"> First Name</th>
+                <th scope="col"> Last Name</th>
+                <th scope="col"> Phone Number</th>
+                <th class="col-action"scope="col">
+                    <button type="button" class="btn btn-primary float-end" (click)="refresh()"><i class="bi bi-plus-lg"></i></button>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let contact of contacts">
+                <td>{{contact.firstName | titlecase}}</td>
+                <td>{{contact.lastName | titlecase}}</td>
+                <td>{{contact.phoneNumber}}</td>
+                <td class="col-action d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" class="btn btn-primary btn-lg" (click)="editContact(contact)"><i class="bi bi-pencil-square"></i></button>
+                    <button type="button" class="btn btn-danger btn-lg" (click)="deleteContact(contact)"><i class="bi bi-x"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refresh()"
+        >
+        </ngb-pagination>
+    </div>
+</div>

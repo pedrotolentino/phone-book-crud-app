@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h4 class="modal-title"> modal </h4>
+    <button type="button" class="btn-close" aria-label="close" (click)="dismiss()"></button>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <label for="firstNameData"> First Name </label>
+            <input type="text" id="firstNameData" class="form-control" [(ngModel)]="contact.firstName" name="firstName">
+        </div>
+        <div class="form-group">
+            <label for="lastNameData"> Last Name </label>
+            <input type="text" id="lastNameData" class="form-control" [(ngModel)]="contact.lastName" name="lastName">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumberData"> First Name </label>
+            <input type="text" id="phoneNumberData" class="form-control" [(ngModel)]="contact.phoneNumber" name="phoneNumber">
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="dismiss()">Ok</button>
+    <button type="button" class="btn btn-danger" (click)="dismiss()">Cancel</button>
+</div>
