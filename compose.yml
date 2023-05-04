@@ -18,7 +18,7 @@ services:
     depends_on:
       db:
         condition: service_started
-    image: phone-book/backend
+    image: phone-book-app/backend
     build:
       context: ./phone-book-actions
       dockerfile: Dockerfile
@@ -31,6 +31,17 @@ services:
       - phone-book-network
     environment:
       - MYSQL_HOST=db
+  frontend:
+    image: phone-book-app/frontend
+    build: 
+      context: ./phone-book-web-page
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    expose:
+      - 80
+    networks:
+      - phone-book-network
 
 volumes:
   phone-book-data:
