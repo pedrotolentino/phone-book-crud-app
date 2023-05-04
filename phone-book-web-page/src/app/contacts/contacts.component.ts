@@ -46,7 +46,11 @@ export class ContactsComponent implements OnInit {
 
     contactModel.result.then(
       (result) => {
-        this.contacts.push(result);
+        this.contactService.addContact(result)
+          .subscribe({
+            next: (response) => this.refresh(),
+            error: (error) => console.error(error)
+          });
       }
     );
   }
@@ -59,15 +63,25 @@ export class ContactsComponent implements OnInit {
     contactModel.componentInstance.actionText = 'Update';
 
     contactModel.result.then(
-      () => {
-        let index = this.contacts.findIndex(contact => contact.id === modifiedContact.id);
-        this.contacts[index] = modifiedContact;
+      (updatedContact) => {
+        this.contactService.updateContact(updatedContact)
+          .subscribe({
+            next: (response) => {
+              let index = this.contacts.findIndex(contactEntry => contactEntry.id === response.id);
+              this.contacts[index] = response;
+            },
+            error: (error) => console.error(error)
+          });
       }
     );
   }
 
   deleteContact(contact: Contact): void {
-    console.log("Deleting the contact : "+contact.firstName);
+    this.contactService.deleteContact(contact)
+    .subscribe({
+      next: () => this.refresh(),
+      error: (error) => console.error(error)
+    });
   }
 
 }
