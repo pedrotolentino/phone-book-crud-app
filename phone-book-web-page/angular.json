@@ -75,7 +75,8 @@
               "browserTarget": "phone-book-web-page:build:production"
             },
             "development": {
-              "browserTarget": "phone-book-web-page:build:development"
+              "browserTarget": "phone-book-web-page:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

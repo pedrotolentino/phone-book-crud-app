@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MOCK_CONTACTS } from '../mock-contacts';
 import { Contact } from '../contact';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormComponent } from '../modal-form/modal-form.component';
+import { ContactService } from '../contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -11,31 +11,59 @@ import { ModalFormComponent } from '../modal-form/modal-form.component';
 })
 export class ContactsComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal,
+              private contactService: ContactService) { }
 
   ngOnInit(): void {
     this.refresh();
   }
 
-  page = 1;
-	pageSize = 4;
-  contacts = MOCK_CONTACTS;
-  collectionSize = MOCK_CONTACTS.length;
+  page: number = 1;
+	pageSize: number = 5;
+  contacts: Contact[] = [];
+  collectionSize: number = 0;
 
   refresh(): void {
-		this.contacts = MOCK_CONTACTS.slice(
-			(this.page - 1) * this.pageSize,
-			(this.page - 1) * this.pageSize + this.pageSize,
-		);
+    this.contactService.getContacts(this.page-1, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          this.contacts = response.contacts || [];
+          this.page = response.pageNumber;
+          this.pageSize = response.pageSize;
+          this.collectionSize = response.totalElements;
+        },
+        error: (error) => {
+          console.error(error);
+          this.contacts = [];
+        }
+      });
   }
 
   addContact(): void {
-    console.log("Adding contact");
+    const contactModel = this.modalService.open(ModalFormComponent, { ariaLabelledBy: 'modal-basic-title' });
+    contactModel.componentInstance.modalTitle = 'Add Contact';
+    contactModel.componentInstance.actionText = 'Register';
+
+    contactModel.result.then(
+      (result) => {
+        this.contacts.push(result);
+      }
+    );
   }
 
   editContact(contact: Contact): void {
-    const contactModel = this.modalService.open(ModalFormComponent, { ariaLabelledBy: 'modal-basic-title' })
-    contactModel.componentInstance.contact = contact;
+    let modifiedContact = {...contact};
+    const contactModel = this.modalService.open(ModalFormComponent, { ariaLabelledBy: 'modal-basic-title' });
+    contactModel.componentInstance.contact = modifiedContact;
+    contactModel.componentInstance.modalTitle = 'Edit Contact';
+    contactModel.componentInstance.actionText = 'Update';
+
+    contactModel.result.then(
+      () => {
+        let index = this.contacts.findIndex(contact => contact.id === modifiedContact.id);
+        this.contacts[index] = modifiedContact;
+      }
+    );
   }
 
   deleteContact(contact: Contact): void {

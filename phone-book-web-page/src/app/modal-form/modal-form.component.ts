@@ -17,7 +17,7 @@ export class ModalFormComponent implements OnInit {
   actionText: string = "Ok";
 
   @Input()
-  contact!: Contact;
+  contact: Contact = {firstName: '', lastName: '', phoneNumber: 0};
 
   constructor(private activeModal: NgbActiveModal) { }
 
@@ -29,7 +29,7 @@ export class ModalFormComponent implements OnInit {
   }
 
   closeToAction(): void {
-    this.activeModal.close("Form validated");
+    this.activeModal.close(this.contact);
   }
 
   contactForm = new FormGroup({
