@@ -1,24 +1,51 @@
 <div class="modal-header">
-    <h4 class="modal-title"> modal </h4>
-    <button type="button" class="btn-close" aria-label="close" (click)="dismiss()"></button>
+    <h4 class="modal-title"> {{modalTitle}} </h4>
+    <button type="button" class="btn-close" aria-label="close" (click)="dismiss('Cancel')"></button>
 </div>
 <div class="modal-body">
-    <form>
+    <form [formGroup]="contactForm">
         <div class="form-group">
             <label for="firstNameData"> First Name </label>
-            <input type="text" id="firstNameData" class="form-control" [(ngModel)]="contact.firstName" name="firstName">
+            <input type="text" 
+                    id="firstNameData" 
+                    class="form-control" 
+                    [(ngModel)]="contact.firstName" 
+                    name="firstName" 
+                    formControlName="firstName"
+                    [ngClass]="{'is-invalid': contactForm.controls['firstName'].errors}">
+            <div *ngIf="contactForm.controls['firstName'].invalid && (contactForm.controls['firstName'].dirty || contactForm.controls['firstName'].touched)" class="invalid-feedback">
+                Invalid first name
+            </div>
         </div>
         <div class="form-group">
             <label for="lastNameData"> Last Name </label>
-            <input type="text" id="lastNameData" class="form-control" [(ngModel)]="contact.lastName" name="lastName">
+            <input type="text" 
+                    id="lastNameData" 
+                    class="form-control" 
+                    [(ngModel)]="contact.lastName" 
+                    name="lastName" 
+                    formControlName="lastName" 
+                    [ngClass]="{'is-invalid': contactForm.controls['lastName'].errors}">
+            <div *ngIf="contactForm.controls['lastName'].invalid && (contactForm.controls['lastName'].dirty || contactForm.controls['lastName'].touched)" class="invalid-feedback">
+                Invalid last name
+            </div>
         </div>
         <div class="form-group">
             <label for="phoneNumberData"> First Name </label>
-            <input type="text" id="phoneNumberData" class="form-control" [(ngModel)]="contact.phoneNumber" name="phoneNumber">
+            <input type="text" 
+                    id="phoneNumberData" 
+                    class="form-control" 
+                    [(ngModel)]="contact.phoneNumber" 
+                    name="phoneNumber" 
+                    formControlName="phoneNumber"
+                    [ngClass]="{'is-invalid': contactForm.controls['phoneNumber'].errors}">
+            <div *ngIf="contactForm.controls['phoneNumber'].invalid && (contactForm.controls['phoneNumber'].dirty || contactForm.controls['phoneNumber'].touched)" class="invalid-feedback">
+                Invalid phone number
+            </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="dismiss()">Ok</button>
-    <button type="button" class="btn btn-danger" (click)="dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="closeToAction()" [disabled]="contactForm.invalid">{{ actionText }}</button>
+    <button type="button" class="btn btn-danger" (click)="dismiss('Cancel')">Cancel</button>
 </div>

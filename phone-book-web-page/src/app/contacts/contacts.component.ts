@@ -29,6 +29,10 @@ export class ContactsComponent implements OnInit {
 		);
   }
 
+  addContact(): void {
+    console.log("Adding contact");
+  }
+
   editContact(contact: Contact): void {
     const contactModel = this.modalService.open(ModalFormComponent, { ariaLabelledBy: 'modal-basic-title' })
     contactModel.componentInstance.contact = contact;
